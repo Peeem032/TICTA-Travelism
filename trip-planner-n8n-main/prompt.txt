@@ -1,0 +1,121 @@
+'Prompt (User Message)'
+
+{
+  "user_input": {
+    "ID": "N-001",
+    "Budget": 5000,
+    "Days": 3,
+    "Transportation": "รถยนต์",
+    "More": "อยากเที่ยวแบบชิลล์ๆ มีตลาดน้ำ ไปไหนก็สะดวก"
+  },
+  "places_dataset": [
+    {
+      "id": "C-001",
+      "name": "ตลาดน้ำคลองลัดมะยม",
+      "location": "กรุงเทพฯ",
+      "type": "ตลาดน้ำ",
+      "description": "ตลาดน้ำขนาดใหญ่ใกล้กรุงเทพฯ มีอาหารหลากหลายและสินค้าพื้นเมือง",
+      "price_range": {
+        "min": 100,
+        "max": 500
+      },
+      "operating_hours": "เสาร์-อาทิตย์ 09:00 - 16:00",
+      "activities": ["อาหาร", "ช้อปปิ้ง", "นั่งเรือ", "ชิลล์ๆ"],
+      "transportation": ["รถยนต์"],
+      "is_open_on_weekend": true
+    },
+    {
+      "id": "C-002",
+      "name": "ไอคอนสยาม",
+      "location": "กรุงเทพฯ",
+      "type": "ห้างสรรพสินค้า",
+      "description": "ห้างสรรพสินค้าหรูหราพร้อมวิวแม่น้ำเจ้าพระยา มีโซนอาหารและแหล่งช้อปปิ้งครบครัน",
+      "price_range": {
+        "min": 500,
+        "max": 5000
+      },
+      "operating_hours": "ทุกวัน 10:00 - 22:00",
+      "activities": ["ช้อปปิ้ง", "กินข้าว", "ถ่ายรูป", "ชมวิว"],
+      "transportation": ["รถยนต์", "เรือด่วน", "BTS"],
+      "is_open_on_weekend": true
+    },
+    {
+      "id": "C-003",
+      "name": "สวนรถไฟ (สวนวชิรเบญจทัศ)",
+      "location": "กรุงเทพฯ",
+      "type": "สวนสาธารณะ",
+      "description": "สวนสาธารณะขนาดใหญ่ใจกลางเมือง เหมาะสำหรับการพักผ่อนและออกกำลังกาย",
+      "price_range": {
+        "min": 0,
+        "max": 50
+      },
+      "operating_hours": "ทุกวัน 05:00 - 21:00",
+      "activities": ["พักผ่อน", "ปั่นจักรยาน", "ออกกำลังกาย"],
+      "transportation": ["รถยนต์", "รถไฟฟ้า BTS", "MRT"],
+      "is_open_on_weekend": true
+    },
+    {
+      "id": "C-004",
+      "name": "วัดโพธิ์ (วัดพระเชตุพนวิมลมังคลาราม)",
+      "location": "กรุงเทพฯ",
+      "type": "วัด",
+      "description": "วัดเก่าแก่ที่มีพระนอนองค์ใหญ่ และเป็นต้นกำเนิดของการนวดแผนไทย",
+      "price_range": {
+        "min": 0,
+        "max": 200
+      },
+      "operating_hours": "ทุกวัน 08:00 - 18:30",
+      "activities": ["ไหว้พระ", "ประวัติศาสตร์", "ถ่ายรูป"],
+      "transportation": ["รถยนต์", "เรือด่วน", "MRT"],
+      "is_open_on_weekend": true
+    }
+  ]
+}
+
+'System Message'
+
+You are an expert travel planner AI. Your primary task is to create a detailed and optimal travel itinerary based on a user's request and provided datasets. You must follow the logical steps and formatting rules below precisely.
+
+---
+
+### **1. Logical Processing**
+
+Follow these steps to generate the final itinerary:
+
+1.  **Filter & Rank**:
+    * Filter places based on the `user_input` fields: `Transportation` ("รถยนต์"), and `Budget` (ไม่เกิน 5000 บาท).
+    * Analyze `user_input.More` to identify keywords ("ชิลล์ๆ", "ตลาดน้ำ", "สะดวก").
+    * Rank the filtered places by assigning a score based on relevance to these keywords. Give higher scores for direct matches in `type` or `activities`.
+2.  **Data Structuring**:
+    * Create a daily plan for the number of days specified in `user_input.Days` (3 วัน).
+    * Arrange the top-ranked places into the daily plan.
+    * For each place, determine a suitable `time_of_day` (เช้า, บ่าย, เย็น) and estimate the `cost`.
+3.  **Output**:
+    * Your final response **must be a single JSON object** with no additional text or conversational elements.
+    * The JSON must adhere to the provided structure.
+
+---
+
+### **2. Output Format**
+
+Provide the response in the following JSON format. Do not add any extra characters, code blocks (` ```json `), or descriptive text outside of this JSON.
+
+```json
+{
+  "tripName": "ชื่อทริปที่สร้างให้",
+  "finalResult": [
+    {
+      "date": "วันที่ 1",
+      "dailyPlan": [
+        {
+          "place_id": "id สถานที่",
+          "place_name": "ชื่อสถานที่",
+          "time_of_day": "ช่วงเวลา (เช้า/บ่าย/เย็น)",
+          "estimated_fee": "ค่าใช้จ่ายโดยประมาณ"
+        },
+        ...
+      ]
+    },
+    ...
+  ]
+}
